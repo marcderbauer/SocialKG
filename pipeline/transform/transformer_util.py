@@ -20,7 +20,7 @@ def convert_prompt_to_llm_query(data: str, prompt: tuple[str,str]) -> dict[str, 
 
     return messages
 
-# ! This doesn't make sense in the loop, right? It's only for certain prompts?
+
 def map_person_to_entity(results: dict) -> dict:
     # * this only makes sense because the person is always the same in a given CV
 
@@ -36,7 +36,7 @@ def map_person_to_entity(results: dict) -> dict:
 
 
 def process_response(response: str | None) -> dict:
-    results = defaultdict(str)
+    results = {}
 
     if not response:
         return results
@@ -46,5 +46,8 @@ def process_response(response: str | None) -> dict:
     if "relationships" in response:
         results["relationships"] = response["relationships"]
     
+    return results
+
+def post_process(results: str) -> dict:
     results = map_person_to_entity(results)
     return results
