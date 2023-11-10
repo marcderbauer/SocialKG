@@ -1,6 +1,8 @@
 # DEV
-venv
+__pycache__
 .env
+.vscode
+venv
 
 # OTHER
 reference_notebook_chatGPT.ipynb
