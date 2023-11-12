@@ -6,15 +6,14 @@ def clean_text(text):
 
 
 def convert_prompt_to_llm_query(data: str, prompt: tuple[str,str]) -> dict[str, str]:
-    extraction_prompt, prompt_template = prompt
+    sys_prompt, user_prompt = prompt
     data = clean_text(data)
-    user_content = Template(extraction_prompt).substitute(ctext=data)
+    user_content = Template(user_prompt).substitute(ctext=data)
 
     messages = [
-    {"role": "system", "content": "You are a entity and relation extractor, precisely extracting information according to a given format."},
-    {"role": "assistant", "content": prompt_template},
+    {"role": "system", "content": sys_prompt},
     {"role": "user", "content": user_content},
-    {"role": "assistant", "content": "Answer: (generated JSON with extracted data)"}
+    {"role": "system", "content": "Output not just the first term-relation-triplet, but every triplet you can find in the text. Answer: (generated JSON with extracted data)"}
     ]
 
     return messages

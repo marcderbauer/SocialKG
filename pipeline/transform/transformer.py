@@ -3,7 +3,7 @@ from pipeline.transform.prompts import prompts # ! Where to move?
 from pipeline.transform.llm import query_llm
 
 # TODO: Move into config file
-MODEL_NAME = "gpt-3.5-turbo-1106"
+MODEL_NAME = "gpt-4-1106-preview"
 TEMPERATURE = 0.1
 TOP_P = 0.8
 SEED = 1234
