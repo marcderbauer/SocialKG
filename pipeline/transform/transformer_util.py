@@ -6,23 +6,12 @@ def clean_text(text):
     return re.sub(r"[^\x00-\x7F]+", " ", text)
 
 
-def convert_prompt_to_llm_query(data: str, prompt: tuple[str, str]) -> dict[str, str]:
-    sys_prompt, user_prompt = prompt
+def turn_query_into_messages(data: str, messages: dict[str, str]) -> dict[str, str]:
     data = clean_text(data)
-    user_content = Template(user_prompt).substitute(ctext=data)
-
-    messages = [
-        # ! Can move in its entirety into config.yaml
-        {"role": "system", "content": sys_prompt},
-        {"role": "user", "content": user_content},
-        # TODO: Check if this system prompt is necessary in this context
-        {
-            "role": "system",
-            "content": "Output not just the first term-relation-triplet, but every triplet you can find in the text. Answer: (generated JSON with extracted data)",
-        },
-    ]
-
-    return messages
+    messages["user_prompt"]["content"] = Template(messages["user_prompt"]["content"]).substitute(
+        ctext=data
+    )
+    return list(messages.values())
 
 
 def process_response(response: str | None) -> dict:

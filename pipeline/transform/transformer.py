@@ -1,26 +1,27 @@
-from pipeline.transform.transformer_util import convert_prompt_to_llm_query, process_response, post_process
-from pipeline.transform.prompts import prompts # ! Where to move?
+from pipeline.transform.transformer_util import turn_query_into_messages
 from pipeline.transform.llm import query_llm
+from typing import Any
 
-# TODO: Move into config file
-MODEL_NAME = "gpt-4-1106-preview"
-TEMPERATURE = 0
-TOP_P = 0.8
-SEED = 1234
 
-class Transformer():
-    def __init__(self) -> None:
-        pass
+class Transformer:
+    def __init__(self, config: dict[str, Any]) -> None:
+        self.llm_config = config["llm"]
+        self.query = config["query"]
 
-    def process(data: str):
+    def process(self, data: str):
         results = {"nodes": [], "relationships": []}
-        # Might want one datastructure that travels all the way through here. Creates traceability
-        for prompt in prompts: # ! not immediately visible where prompts comes from, move into config
-            llm_query = convert_prompt_to_llm_query(data, prompt)
-    
-            response = query_llm(llm_query, model_name=MODEL_NAME, temperature=TEMPERATURE, top_p=TOP_P, seed = SEED)
 
-            results["nodes"] += response["nodes"]
-            results["relationships"] += response["relationships"]
+        messages = turn_query_into_messages(data, self.query)
+
+        response = query_llm(
+            messages,
+            model_name=self.llm_config["model_name"],
+            temperature=self.llm_config["temperature"],
+            top_p=self.llm_config["top_p"],
+            seed=self.llm_config["seed"],
+        )
+
+        results["nodes"] += response["nodes"]
+        results["relationships"] += response["relationships"]
 
         return results
