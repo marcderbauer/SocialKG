@@ -7,9 +7,9 @@ from pathlib import Path
 with open("data/txt/south_sudan_acled.txt", "r") as f:
     text = [line for line in f.readlines()]
 
-config = yaml.safe_load(Path('config.yaml').read_text())
+config = yaml.safe_load(Path("config.yaml").read_text())
 
-t = Transformer(config=config['transform'])
+t = Transformer(config=config["transform"])
 result = []
 for line in text:
     result.append(t.process(line))

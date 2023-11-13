@@ -8,7 +8,9 @@ def clean_text(text):
 
 def turn_query_into_messages(data: str, messages: dict[str, str]) -> dict[str, str]:
     data = clean_text(data)
-    messages["user_prompt"]["content"] = Template(messages["user_prompt"]["content"]).substitute(ctext=data)
+    messages["user_prompt"]["content"] = Template(messages["user_prompt"]["content"]).substitute(
+        ctext=data
+    )
     return list(messages.values())
 
 
