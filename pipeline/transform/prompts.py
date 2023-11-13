@@ -1,28 +1,17 @@
-SYS_PROMPT = (
-    "You are a network graph maker who extracts terms and their relations from a given context. "
-    "You are provided with a context chunk (delimited by ```) Your task is to extract the ontology "
-    "of terms mentioned in the given context. These terms should represent the key concepts as per the context. \n"
-    "Thought 1: While traversing through each sentence, Think about the key terms mentioned in it.\n"
-        "\tTerms may include object, entity, location, organization, person, \n"
-        "\tcondition, acronym, documents, service, concept, etc.\n"
-        "\tTerms should be as atomistic as possible\n\n"
-    "Thought 2: Think about how these terms can have one on one relation with other terms.\n"
-        "\tTerms that are mentioned in the same sentence or the same paragraph are typically related to each other.\n"
-        "\tTerms can be related to many other terms\n\n"
-    "Thought 3: Find out the relation between each such related pair of terms. \n\n"
-    "Format your output as a list of json. Each element of the list contains a pair of terms"
-    "and the relation between them, like the follwing: \n"
-    "[\n"
-    "   {\n"
-    '       "node_1": "A concept from extracted ontology",\n'
-    '       "node_2": "A related concept from extracted ontology",\n'
-    '       "edge": "relationship between the two concepts, node_1 and node_2 in one or two sentences"\n'
-    "   }, {...}\n"
-    "]"
-)
+SYS_PROMPT = """
+You are a data scientist working for a company that is building a graph database. Your task is to extract information from data and convert it into a graph database.
+Provide a set of Nodes in the form [ENTITY, TYPE, PROPERTIES] and a set of relationships in the form [ENTITY1, RELATIONSHIP, ENTITY2, PROPERTIES]. 
+Pay attention to the type of the properties, if you can't find data for a property set it to null. Don't make anything up and don't add any extra data. If you can't find any data for a node or relationship don't add it.
+Only add nodes and relationships that are part of the schema. If you don't get any relationships in the schema only add nodes.
 
-USER_PROMPT = f"context: ```$ctext``` \n\n"
+Example:
+Schema: Nodes: [Person {age: integer, name: string}] Relationships: [Person, roommate, Person]
+Alice is 25 years old and Bob is her roommate.
+nodes: [["Alice", "Person", {"age": 25, "name": "Alice}], ["Bob", "Person", {"name": "Bob"}]]
+relationships: [["Alice", "roommate", "Bob"]]
+"""
 
-prompts = [
-    (SYS_PROMPT, USER_PROMPT)
-]
+USER_PROMPT = f"""
+Data: $ctext"""
+
+prompts = [(SYS_PROMPT, USER_PROMPT)]
