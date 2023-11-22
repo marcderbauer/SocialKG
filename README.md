@@ -6,7 +6,7 @@ As the name might hint at, this repository's goal is to provide structured knowl
 It follows a standard ETL-Pipeline scheme with the following three steps:  
 
 1. __Extract__: Extract text from a given source (e.g. `HTML`, `PDF`, `TXT` or maybe even from an `API`).
-2. __Transform__: Take the text from step (1) and extract useful information into relational triplets (currently using an LLM).  
+2. __Transform__: Take the text from step (1) and extract useful information into relational triplets.  
 3. __Load__: Take the relational triplets and load them into a Graph Database ([Neo4j](https://neo4j.com/)).  
   
 For now the main focus is to construct an MVP. This will be a proof of concept on how to use LLMs to construct a Knowledge Graph.  
